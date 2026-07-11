@@ -1,0 +1,28 @@
+{
+  "name": "ATOMIC-CRASHER",
+  "version": "5.0.0",
+  "description": "💥 ATOMIC CRASHER - WhatsApp Bug Executor & Panel",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "https://github.com/hanzpiwxkecebet/baileys/archive/refs/heads/main.tar.gz",
+    "telegraf": "^4.16.3",
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "pino": "^9.2.0",
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.3.6",
+    "moment": "^2.30.1",
+    "sharp": "^0.32.6",
+    "dotenv": "^16.4.7",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "keywords": ["whatsapp", "bot", "bug", "atomic", "crasher"],
+  "author": "@kyu_storee1 & @tzynotdev",
+  "license": "MIT"
+}
