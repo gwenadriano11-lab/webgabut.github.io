@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xzhero - Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* ================= RESET & BASE ================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #000;
+      color: #E0E0E0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ================= BACKGROUND VIDEO ================= */
+    #bg-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -2;
+        object-fit: cover;
+    }
+
+    #bg-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* Gelapkan background video */
+        z-index: -1;
+        backdrop-filter: blur(3px);
+    }
+
+    /* ================= WRAPPERS (Views) ================= */
+    .view-container {
+        width: 100%;
+        max-width: 380px;
+        padding: 20px;
+        position: relative;
+        z-index: 10;
+        display: none;
+        animation: fadeIn 0.8s ease;
+    }
+    
+    .view-container.active {
+        display: block;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ================= VIEW 1: HOME MENU (THEME UPDATED) ================= */
+    
+    /* Glitch Header Text */
+    .header-glitch-container {
+        text-align: center;
+        margin-bottom: 30px;
+        height: 60px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .glitch-text {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 24px;
+        color: #fff;
+        /* BLUE THEME SHADOWS */
+        text-shadow: 1px 1px 0px #00e5ff, -1px -1px 0px #000080;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        /* ANIMATION SPEED SLOWED slightly or movement reduced */
+        animation: glitch-anim 2.5s infinite; 
+        display: inline-block;
+    }
+
+    /* REDUCED GLITCH INTENSITY (Lebih halus) */
+    @keyframes glitch-anim {
+        0% { transform: translate(0); }
+        5% { transform: translate(-1px, 1px); }
+        10% { transform: translate(-1px, -1px); }
+        15% { transform: translate(1px, 1px); }
+        20% { transform: translate(1px, -1px); }
+        25% { transform: translate(0); }
+        100% { transform: translate(0); }
+    }
+
+    /* Video Banner Card */
+    .banner-card {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 229, 255, 0.3); /* Cyan Border */
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+        margin-bottom: 40px; 
+    }
+
+    .banner-video-element {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7) hue-rotate(180deg); 
+        filter: brightness(0.7);
+    }
+
+    .banner-text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 3px;
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.8); /* Cyan glow */
+        text-transform: uppercase;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+    }
+
+    /* Small Instruction Text */
+    .instruction-text {
+        text-align: center;
+        font-family: 'VT323', monospace;
+        color: #8bbce5; /* Light Blueish Grey */
+        font-size: 16px;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    /* Buttons */
+    .action-btn {
+        width: 100%;
+        padding: 18px;
+        margin-bottom: 15px;
+        border-radius: 30px; 
+        font-family: 'Orbitron', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-login-style {
+        /* BLUE GRADIENT */
+        background: rgba(0, 50, 100, 0.8);
+        border: 1px solid #00e5ff;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    }
+    
+    .btn-login-style:hover {
+        background: #004e92;
+        box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+        transform: scale(1.02);
+    }
+
+    .btn-register-style {
+        background: transparent;
+        border: 1px solid rgba(0, 229, 255, 0.3);
+        color: #fff;
+    }
+
+    .btn-register-style:hover {
+        border-color: #00e5ff;
+        background: rgba(0, 229, 255, 0.1);
+    }
+
+
+    /* Footer */
+    .footer-area {
+        margin-top: 50px;
+        background: rgba(5, 10, 20, 0.8);
+        border-radius: 20px;
+        padding: 20px;
+        border: 1px solid rgba(0, 229, 255, 0.1);
+        text-align: center;
+    }
+
+    .footer-title {
+        font-size: 12px;
+        color: #8bbce5;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+
+    .social-row {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .social-icon {
+        color: #fff;
+        font-size: 24px;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+    
+    .social-icon:hover { color: #00e5ff; transform: scale(1.2); }
+
+    .copyright {
+        margin-top: 15px;
+        font-size: 10px;
+        color: #5577aa;
+        font-family: 'VT323';
+    }
+
+    /* ================= VIEW 2: LOGIN FORM (THEME UPDATED) ================= */
+    .login-container {
+        background: rgba(5, 10, 20, 0.9);
+        border: 1px solid rgba(0, 229, 255, 0.3); /* Cyan tint border */
+        border-radius: 25px;
+        padding: 40px 25px;
+        text-align: center;
+        box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        position: relative;
+    }
+
+    .profile-img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #00e5ff; /* Cyan Border */
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        margin-bottom: 15px;
+    }
+
+    .login-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 22px;
+        color: #fff;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+    }
+
+    .login-subtitle {
+        font-size: 12px;
+        color: #8bbce5;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .input-field-group {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .input-style {
+        width: 100%;
+        padding: 15px 45px;
+        background: #02050a;
+        border: 1px solid #1a2a3a;
+        border-radius: 12px;
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 16px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .input-style:focus {
+        border-color: #00e5ff;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #00e5ff;
+        font-size: 16px;
+    }
+
+    .toggle-pass {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #5577aa;
+        cursor: pointer;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        margin-top: 10px;
+        /* BLUE GRADIENT */
+        background: linear-gradient(90deg, #004e92, #00e5ff);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+    }
+
+    /* ================= VIEW 3: LOADING SCREEN (UPDATED) ================= */
+    .loading-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000;
+        z-index: 3000;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* BORDER DIHILANGKAN */
+    .video-wrapper {
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        /* Background & Padding removed to remove border */
+        box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+        margin-bottom: 20px; 
+    }
+
+    .loading-video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 15px; 
+        background: #000;
+    }
+
+    .loading-text {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 26px; /* Dibesarkan sedikit */
+        color: #fff; /* Tidak berubah warna */
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        animation: pulseOpacity 1.5s infinite;
+        margin-top: 10px; 
+    }
+
+    @keyframes pulseOpacity { 
+        0% { opacity: 0.6; } 
+        50% { opacity: 1; } 
+        100% { opacity: 0.6; } 
+    }
+
+    /* Sidebar / Loading Bar */
+    .sidebar-loading {
+        width: 80%;
+        max-width: 300px;
+        height: 4px;
+        background: #111;
+        border-radius: 2px;
+        margin-top: 15px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+    }
+
+    .sidebar-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #004e92, #00e5ff);
+        box-shadow: 0 0 10px #00e5ff;
+        animation: fillSidebar 15s linear forwards; /* 15 Detik sesuai timeout */
+    }
+
+    @keyframes fillSidebar {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+
+    /* ================= POPUP (THEME UPDATED) ================= */
+    #customPopup {
+        position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+        background: rgba(0, 20, 40, 0.95); color: #00e5ff; padding: 15px 30px;
+        border-radius: 8px; z-index: 9999; display: none;
+        font-family: 'Rajdhani'; font-weight: bold; border: 1px solid #00e5ff;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+  </style>
+</head>
+<body>
+
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="https://k.top4top.io/m_36273idh51.mp4" type="video/mp4">
+  </video>
+  <div id="bg-overlay"></div>
+
+  <div id="customPopup">Buy Access Sono Ke @FyzzModss</div>
+
+  <div id="view-home" class="view-container">
+    
+    <div class="header-glitch-container">
+        <div class="glitch-text" id="cyclingText">Welcome Back To System</div>
+    </div>
+
+    <div class="banner-card">
+        <video class="banner-video-element" autoplay muted loop playsinline>
+            <source src="https://k.top4top.io/m_36273idh51.mp4" type="video/mp4">
+        </video>
+        <div class="banner-text-overlay">V5 Engine</div>
+    </div>
+
+    <p class="instruction-text">Please Log in or Register to continue</p>
+
+    <div class="action-btn btn-login-style" id="btnLoginNav">
+        Login
+    </div>
+
+    <a href="http://t.me/SilentTheKiller_bot" target="_blank" style="text-decoration: none;">
+        <div class="action-btn btn-register-style">
+            Register
+        </div>
+    </a>
+
+    <div class="footer-area">
+        <div class="footer-title">Contact Us</div>
+        <div class="social-row">
+            <a href="https://t.me/FyzzModss" target="_blank" class="social-icon">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank" class="social-icon">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
+        <div class="copyright">© 2025 XZHERO</div>
+    </div>
+
+  </div>
+
+  <div id="view-login" class="view-container">
+    <div class="login-container">
+        
+        <img src="https://j.top4top.io/p_3627rskhj1.jpg" alt="Profile" class="profile-img">
+        <h2 class="login-title">Xzhero V5 Engine</h2>
+        <p class="login-subtitle">Welcome Back Broo</p>
+
+        <form method="POST" action="/auth" id="serverForm" style="display:none;">
+            <input type="text" name="username" id="realUser">
+            <input type="text" name="key" id="realPass">
+        </form>
+
+        <div class="input-field-group">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" id="visUser" class="input-style" placeholder="Username">
+        </div>
+
+        <div class="input-field-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="visPass" class="input-style" placeholder="Password">
+            <i class="fas fa-eye-slash toggle-pass" id="toggleBtn"></i>
+        </div>
+
+        <button class="submit-btn" id="btnLoginSubmit">Masuk</button>
+
+    </div>
+  </div>
+
+  <div id="loadingScreen" class="loading-screen">
+    <div class="video-wrapper">
+        <video class="loading-video" id="successVideo" playsinline loop muted>
+            <source src="https://g.top4top.io/m_3627eps631.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="loading-text">Xzhero Trasher</div>
+    <div class="sidebar-loading">
+        <div class="sidebar-fill"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- ELEMENTS ---
+        const viewHome = document.getElementById('view-home');
+        const viewLogin = document.getElementById('view-login');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const video = document.getElementById('successVideo');
+        
+        const btnLoginNav = document.getElementById('btnLoginNav');
+        const btnLoginSubmit = document.getElementById('btnLoginSubmit');
+        
+        const visUser = document.getElementById('visUser');
+        const visPass = document.getElementById('visPass');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const popup = document.getElementById('customPopup');
+
+        const serverForm = document.getElementById('serverForm');
+        const realUser = document.getElementById('realUser');
+        const realPass = document.getElementById('realPass');
+
+        // --- TEXT CYCLING LOGIC ---
+        const cyclingText = document.getElementById('cyclingText');
+        const textOptions = ["Welcome Back To System", "Xzhero V5 Engine"];
+        let textIndex = 0;
+
+        setInterval(() => {
+            textIndex = (textIndex + 1) % textOptions.length;
+            cyclingText.style.opacity = 0;
+            setTimeout(() => {
+                cyclingText.innerText = textOptions[textIndex];
+                cyclingText.style.opacity = 1;
+            }, 300); 
+        }, 5000);
+
+        // ==========================================
+        // LOGIC ANTI-LOOP & AUTO-LOGIN (MODIFIED)
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const serverMsg = urlParams.get('msg');
+
+        if(serverMsg) {
+            // Error dari server -> Reset Session
+            localStorage.removeItem('silentUser');
+            localStorage.removeItem('silentPass');
+            showPopup(decodeURIComponent(serverMsg));
+            
+            // Tampilkan halaman Login langsung jika error
+            viewHome.classList.remove('active');
+            viewLogin.classList.add('active');
+        
+        } else {
+            // NORMAL: Selalu tampilkan Home Menu dulu (tidak langsung lompat)
+            viewHome.classList.add('active');
+        }
+
+        // --- NAVIGATION LOGIC (MODIFIED FOR AUTO-LOGIN) ---
+        btnLoginNav.addEventListener('click', () => {
+            // Cek apakah ada data tersimpan
+            const savedUser = localStorage.getItem('silentUser');
+            const savedPass = localStorage.getItem('silentPass');
+
+            if (savedUser && savedPass) {
+                // DATA ADA: Skip Input Manual -> Langsung Loading
+                realUser.value = savedUser;
+                realPass.value = savedPass;
+                
+                viewHome.classList.remove('active');
+                viewHome.style.display = 'none';
+                
+                startLoadingSequence();
+            } else {
+                // DATA TIDAK ADA: Tampilkan Form Login
+                viewHome.classList.remove('active');
+                viewHome.style.display = 'none'; 
+                
+                viewLogin.style.display = 'block';
+                setTimeout(() => viewLogin.classList.add('active'), 10);
+            }
+        });
+
+        // --- PASSWORD TOGGLE ---
+        toggleBtn.addEventListener('click', () => {
+            const type = visPass.getAttribute('type') === 'password' ? 'text' : 'password';
+            visPass.setAttribute('type', type);
+            toggleBtn.classList.toggle('fa-eye');
+            toggleBtn.classList.toggle('fa-eye-slash');
+        });
+
+        // --- LOGIN SUBMIT LOGIC (Manual Input) ---
+        btnLoginSubmit.addEventListener('click', () => {
+            const u = visUser.value.trim();
+            const p = visPass.value.trim();
+
+            if(!u || !p) {
+                showPopup("Isi Username & Password!");
+                return;
+            }
+
+            // Simpan data untuk auto-login berikutnya
+            localStorage.setItem('silentUser', u);
+            localStorage.setItem('silentPass', p);
+
+            realUser.value = u;
+            realPass.value = p;
+
+            viewLogin.classList.remove('active');
+            viewLogin.style.display = 'none';
+
+            startLoadingSequence();
+        });
+
+        // --- LOADING SEQUENCE (15 Detik) ---
+        function startLoadingSequence() {
+            loadingScreen.style.display = 'flex';
+            video.play().catch(() => {});
+
+            setTimeout(() => {
+                serverForm.submit();
+            }, 15000); 
+        }
+
+        // --- HELPER POPUP ---
+        function showPopup(msg) {
+            popup.innerText = msg;
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
+        }
+    });
+  </script>
+</body>
+</html>
